@@ -1,0 +1,46 @@
+basePath: /api/v1
+definitions:
+  main.Director:
+    properties:
+      firstname:
+        type: string
+      lastname:
+        type: string
+    type: object
+  main.Movie:
+    properties:
+      director:
+        $ref: '#/definitions/main.Director'
+      id:
+        type: string
+      isbn:
+        type: string
+      title:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: This is a sample server for a movie store.
+  title: Movies CRUD API
+  version: 1.0.0
+paths:
+  /movies:
+    get:
+      consumes:
+      - application/json
+      description: get all movies
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.Movie'
+            type: array
+        "404":
+          description: No movies found
+          schema:
+            type: string
+      summary: List movies
+swagger: "2.0"
