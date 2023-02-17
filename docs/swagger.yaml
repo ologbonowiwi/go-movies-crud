@@ -24,6 +24,23 @@ info:
   title: Movies CRUD API
   version: 1.0.0
 paths:
+  /movie/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete movie based on id
+      parameters:
+      - description: Id of user that will be deleted
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      summary: Delete movie
   /movies:
     get:
       consumes:

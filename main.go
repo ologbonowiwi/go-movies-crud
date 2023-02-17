@@ -44,11 +44,32 @@ func getMovies(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(movies)
 }
 
-// @title Movies CRUD API
-// @description This is a sample server for a movie store.
-// @version 1.0.0
+// @Summary		Delete movie
+// @Description	delete movie based on id
+// @Param			id	path	int	true	"Id of user that will be deleted"
+// @Accept			json
+// @Produce		json
+// @Success		204
+// @Failure		204
+// @Router			/movie/{id} [delete]
+func deleteMovie(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
 
-// @BasePath /api/v1
+	for index, item := range movies {
+		if item.ID == params["id"] {
+			movies = append(movies[:index], movies[index+1:]...)
+			break
+		}
+	}
+
+	w.WriteHeader(http.StatusNoContent)
+}
+
+//	@title			Movies CRUD API
+//	@description	This is a sample server for a movie store.
+//	@version		1.0.0
+
+// @BasePath	/api/v1
 func main() {
 	r := mux.NewRouter()
 
@@ -66,6 +87,7 @@ func main() {
 
 	// add your routes
 	api.HandleFunc("/movies", getMovies).Methods(http.MethodGet)
+	api.HandleFunc("/movie/{id}", deleteMovie).Methods(http.MethodDelete)
 
 	fmt.Printf("Starting server at port 8000\n")
 	log.Fatal(http.ListenAndServe(":8000", r))
