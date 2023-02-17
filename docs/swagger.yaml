@@ -24,7 +24,25 @@ info:
   title: Movies CRUD API
   version: 1.0.0
 paths:
-  /movie:
+  /movies:
+    get:
+      consumes:
+      - application/json
+      description: get all movies
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.Movie'
+            type: array
+        "404":
+          description: No movies found
+          schema:
+            type: string
+      summary: List movies
     post:
       consumes:
       - application/json
@@ -44,7 +62,7 @@ paths:
           schema:
             $ref: '#/definitions/main.Movie'
       summary: Create a new movie
-  /movie/{id}:
+  /movies/{id}:
     delete:
       consumes:
       - application/json
@@ -111,23 +129,4 @@ paths:
         "404":
           description: Not Found
       summary: Update existant movie
-  /movies:
-    get:
-      consumes:
-      - application/json
-      description: get all movies
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/main.Movie'
-            type: array
-        "404":
-          description: No movies found
-          schema:
-            type: string
-      summary: List movies
 swagger: "2.0"

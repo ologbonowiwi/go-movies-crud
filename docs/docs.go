@@ -15,7 +15,34 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/movie": {
+        "/movies": {
+            "get": {
+                "description": "get all movies",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "List movies",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/main.Movie"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No movies found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "create new movie based on received data",
                 "consumes": [
@@ -46,7 +73,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/movie/{id}": {
+        "/movies/{id}": {
             "get": {
                 "description": "get movie based on id",
                 "consumes": [
@@ -142,35 +169,6 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/main.Movie"
                             }
-                        }
-                    }
-                }
-            }
-        },
-        "/movies": {
-            "get": {
-                "description": "get all movies",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "List movies",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/main.Movie"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "No movies found",
-                        "schema": {
-                            "type": "string"
                         }
                     }
                 }

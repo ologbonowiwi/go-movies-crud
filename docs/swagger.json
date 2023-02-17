@@ -8,7 +8,34 @@
     },
     "basePath": "/api/v1",
     "paths": {
-        "/movie": {
+        "/movies": {
+            "get": {
+                "description": "get all movies",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "List movies",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/main.Movie"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No movies found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "create new movie based on received data",
                 "consumes": [
@@ -39,7 +66,7 @@
                 }
             }
         },
-        "/movie/{id}": {
+        "/movies/{id}": {
             "get": {
                 "description": "get movie based on id",
                 "consumes": [
@@ -135,35 +162,6 @@
                             "items": {
                                 "$ref": "#/definitions/main.Movie"
                             }
-                        }
-                    }
-                }
-            }
-        },
-        "/movies": {
-            "get": {
-                "description": "get all movies",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "List movies",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/main.Movie"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "No movies found",
-                        "schema": {
-                            "type": "string"
                         }
                     }
                 }

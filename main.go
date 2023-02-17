@@ -52,7 +52,7 @@ func getMovies(w http.ResponseWriter, r *http.Request) {
 // @Accept			json
 // @Produce		json
 // @Success		200 {object} []Movie
-// @Router			/movie/{id} [delete]
+// @Router			/movies/{id} [delete]
 func deleteMovie(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
@@ -74,7 +74,7 @@ func deleteMovie(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Success 200 {object} Movie
 // @Failure 404
-// @Router /movie/{id} [get]
+// @Router /movies/{id} [get]
 func getMovie(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
@@ -105,7 +105,7 @@ func decodeMovie(w http.ResponseWriter, r *http.Request) (Movie, error) {
 // @Produce json
 // @Param movie body Movie true "movie data"
 // @Success 201 {object} Movie
-// @Router /movie [post]
+// @Router /movies [post]
 func createMovie(w http.ResponseWriter, r *http.Request) {
 	movie, err := decodeMovie(w, r)
 
@@ -130,7 +130,7 @@ func createMovie(w http.ResponseWriter, r *http.Request) {
 // @Param id path int true "Id of user to be updated"
 // @Success 200 {object} Movie
 // @Failure 404
-// @Router /movie/{id} [put]
+// @Router /movies/{id} [put]
 func updateMovie(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
@@ -178,10 +178,10 @@ func main() {
 
 	// add your routes
 	api.HandleFunc("/movies", getMovies).Methods(http.MethodGet)
-	api.HandleFunc("/movie/{id}", deleteMovie).Methods(http.MethodDelete)
-	api.HandleFunc("/movie/{id}", getMovie).Methods(http.MethodGet)
-	api.HandleFunc("/movie", createMovie).Methods(http.MethodPost)
-	api.HandleFunc("/movie/{id}", updateMovie).Methods(http.MethodPut)
+	api.HandleFunc("/movies/{id}", deleteMovie).Methods(http.MethodDelete)
+	api.HandleFunc("/movies/{id}", getMovie).Methods(http.MethodGet)
+	api.HandleFunc("/movies", createMovie).Methods(http.MethodPost)
+	api.HandleFunc("/movies/{id}", updateMovie).Methods(http.MethodPut)
 
 	fmt.Printf("Starting server at port 8000\n")
 	log.Fatal(http.ListenAndServe(":8000", r))
