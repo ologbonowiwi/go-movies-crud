@@ -8,6 +8,7 @@ import (
 
 	"github.com/gorilla/mux"
 	_ "github.com/ologbonowiwi/go-movies-crud/docs"
+	"github.com/ologbonowiwi/go-movies-crud/lib"
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 
@@ -34,8 +35,6 @@ var movies []Movie
 // @Failure 404 {string} string "No movies found"
 // @Router /movies [get]
 func getMovies(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
 	if len(movies) == 0 {
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode("No movies found")
@@ -62,8 +61,11 @@ func main() {
 	// put all your routes on /api/v1
 	api := r.PathPrefix("/api/v1").Subrouter()
 
+	// This middleware set the "Content-Type" to "application/json" for each request
+	api.Use(lib.SetContentType)
+
 	// add your routes
-	api.HandleFunc("/movies", getMovies).Methods("GET")
+	api.HandleFunc("/movies", getMovies).Methods(http.MethodGet)
 
 	fmt.Printf("Starting server at port 8000\n")
 	log.Fatal(http.ListenAndServe(":8000", r))
