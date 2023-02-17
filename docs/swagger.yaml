@@ -41,6 +41,26 @@ paths:
         "204":
           description: No Content
       summary: Delete movie
+    get:
+      consumes:
+      - application/json
+      description: get single movie based on id
+      parameters:
+      - description: Id of user to get
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Movie'
+        "404":
+          description: Not Found
+      summary: Get movie
   /movies:
     get:
       consumes:
