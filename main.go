@@ -10,7 +10,6 @@ import (
 
 	"github.com/gorilla/mux"
 	_ "github.com/ologbonowiwi/go-movies-crud/docs"
-	"github.com/ologbonowiwi/go-movies-crud/lib"
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 
@@ -172,7 +171,12 @@ func main() {
 	api := r.PathPrefix("/api/v1").Subrouter()
 
 	// This middleware set the "Content-Type" to "application/json" for each request
-	api.Use(lib.SetContentType)
+	api.Use(func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Content-Type", "application/json")
+			next.ServeHTTP(w, r)
+		})
+	})
 
 	// add your routes
 	api.HandleFunc("/movies", getMovies).Methods(http.MethodGet)
