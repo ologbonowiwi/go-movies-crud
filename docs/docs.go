@@ -77,6 +77,42 @@ const docTemplate = `{
                     }
                 }
             },
+            "put": {
+                "description": "update existant movie based on his id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Update existant movie",
+                "parameters": [
+                    {
+                        "description": "data to update",
+                        "name": "movie",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.Movie"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Id of user to be updated",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.Movie"
+                        }
+                    }
+                }
+            },
             "delete": {
                 "description": "delete movie based on id and returns the remaining movies list",
                 "consumes": [

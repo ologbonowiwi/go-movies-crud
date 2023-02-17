@@ -89,6 +89,16 @@ func getMovie(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(fmt.Sprintf("Movie with id %s not found", params["id"]))
 }
 
+func decodeMovie(w http.ResponseWriter, r *http.Request) (Movie, error) {
+	var movie Movie
+
+	if err := json.NewDecoder(r.Body).Decode(&movie); err != nil {
+		return Movie{}, err
+	}
+
+	return movie, nil
+}
+
 // @Summary Create a new movie
 // @Description create new movie based on received data
 // @Accept json
@@ -97,9 +107,9 @@ func getMovie(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} Movie
 // @Router /movie [post]
 func createMovie(w http.ResponseWriter, r *http.Request) {
-	var movie Movie
+	movie, err := decodeMovie(w, r)
 
-	if err := json.NewDecoder(r.Body).Decode(&movie); err != nil {
+	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode("internal server error")
 		return
@@ -109,6 +119,40 @@ func createMovie(w http.ResponseWriter, r *http.Request) {
 	movies = append(movies, movie)
 
 	json.NewEncoder(w).Encode(movie)
+}
+
+// @Summary Update existant movie
+// @Description update existant movie based on his id
+// @Accept json
+// @Produce json
+// @Param movie body Movie true "data to update"
+// @Param id path int true "Id of user to be updated"
+// @Success 200 {object} Movie
+// @Failure 404
+// @Router /movie/{id} [put]
+func updateMovie(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+
+	for index, item := range movies {
+		if item.ID == params["id"] {
+			movies = append(movies[:index], movies[index+1:]...)
+
+			movie, err := decodeMovie(w, r)
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				json.NewEncoder(w).Encode("internal server error")
+				return
+			}
+
+			movie.ID = params["id"]
+			movies = append(movies, movie)
+			json.NewEncoder(w).Encode(movie)
+			return
+		}
+	}
+
+	w.WriteHeader(http.StatusNotFound)
+	json.NewEncoder(w).Encode(fmt.Sprintf("Movie with id %s not found", params["id"]))
 }
 
 //	@title			Movies CRUD API
@@ -136,6 +180,7 @@ func main() {
 	api.HandleFunc("/movie/{id}", deleteMovie).Methods(http.MethodDelete)
 	api.HandleFunc("/movie/{id}", getMovie).Methods(http.MethodGet)
 	api.HandleFunc("/movie", createMovie).Methods(http.MethodPost)
+	api.HandleFunc("/movie/{id}", updateMovie).Methods(http.MethodPut)
 
 	fmt.Printf("Starting server at port 8000\n")
 	log.Fatal(http.ListenAndServe(":8000", r))
