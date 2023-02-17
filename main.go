@@ -45,12 +45,11 @@ func getMovies(w http.ResponseWriter, r *http.Request) {
 }
 
 // @Summary		Delete movie
-// @Description	delete movie based on id
+// @Description	delete movie based on id and returns the remaining movies list
 // @Param			id	path	int	true	"Id of user that will be deleted"
 // @Accept			json
 // @Produce		json
-// @Success		204
-// @Failure		204
+// @Success		200 {object} []Movie
 // @Router			/movie/{id} [delete]
 func deleteMovie(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
@@ -62,7 +61,8 @@ func deleteMovie(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	w.WriteHeader(http.StatusNoContent)
+	w.WriteHeader(http.StatusAccepted)
+	json.NewEncoder(w).Encode(movies)
 }
 
 // @Summary Get single movie

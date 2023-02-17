@@ -17,14 +17,14 @@ const docTemplate = `{
     "paths": {
         "/movie/{id}": {
             "get": {
-                "description": "get single movie based on id",
+                "description": "get movie based on id",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Get movie",
+                "summary": "Get single movie",
                 "parameters": [
                     {
                         "type": "integer",
@@ -47,7 +47,7 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "description": "delete movie based on id",
+                "description": "delete movie based on id and returns the remaining movies list",
                 "consumes": [
                     "application/json"
                 ],
@@ -65,8 +65,14 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "204": {
-                        "description": "No Content"
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/main.Movie"
+                            }
+                        }
                     }
                 }
             }

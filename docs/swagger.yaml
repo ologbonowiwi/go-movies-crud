@@ -28,7 +28,7 @@ paths:
     delete:
       consumes:
       - application/json
-      description: delete movie based on id
+      description: delete movie based on id and returns the remaining movies list
       parameters:
       - description: Id of user that will be deleted
         in: path
@@ -38,13 +38,17 @@ paths:
       produces:
       - application/json
       responses:
-        "204":
-          description: No Content
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.Movie'
+            type: array
       summary: Delete movie
     get:
       consumes:
       - application/json
-      description: get single movie based on id
+      description: get movie based on id
       parameters:
       - description: Id of user to get
         in: path
@@ -60,7 +64,7 @@ paths:
             $ref: '#/definitions/main.Movie'
         "404":
           description: Not Found
-      summary: Get movie
+      summary: Get single movie
   /movies:
     get:
       consumes:
