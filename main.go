@@ -104,7 +104,7 @@ func decodeMovie(w http.ResponseWriter, r *http.Request) (Movie, error) {
 // @Accept json
 // @Produce json
 // @Param movie body Movie true "movie data"
-// @Success 200 {object} Movie
+// @Success 201 {object} Movie
 // @Router /movie [post]
 func createMovie(w http.ResponseWriter, r *http.Request) {
 	movie, err := decodeMovie(w, r)
@@ -118,6 +118,7 @@ func createMovie(w http.ResponseWriter, r *http.Request) {
 	movie.ID = strconv.Itoa(rand.Intn(10000000000))
 	movies = append(movies, movie)
 
+	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(movie)
 }
 

@@ -30,8 +30,8 @@
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/main.Movie"
                         }
@@ -103,6 +103,9 @@
                         "schema": {
                             "$ref": "#/definitions/main.Movie"
                         }
+                    },
+                    "404": {
+                        "description": "Not Found"
                     }
                 }
             },
