@@ -24,6 +24,26 @@ info:
   title: Movies CRUD API
   version: 1.0.0
 paths:
+  /movie:
+    post:
+      consumes:
+      - application/json
+      description: create new movie based on received data
+      parameters:
+      - description: movie data
+        in: body
+        name: movie
+        required: true
+        schema:
+          $ref: '#/definitions/main.Movie'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Movie'
+      summary: Create a new movie
   /movie/{id}:
     delete:
       consumes:

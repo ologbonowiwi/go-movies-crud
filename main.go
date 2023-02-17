@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"math/rand"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 	_ "github.com/ologbonowiwi/go-movies-crud/docs"
@@ -87,6 +89,28 @@ func getMovie(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(fmt.Sprintf("Movie with id %s not found", params["id"]))
 }
 
+// @Summary Create a new movie
+// @Description create new movie based on received data
+// @Accept json
+// @Produce json
+// @Param movie body Movie true "movie data"
+// @Success 200 {object} Movie
+// @Router /movie [post]
+func createMovie(w http.ResponseWriter, r *http.Request) {
+	var movie Movie
+
+	if err := json.NewDecoder(r.Body).Decode(&movie); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode("internal server error")
+		return
+	}
+
+	movie.ID = strconv.Itoa(rand.Intn(10000000000))
+	movies = append(movies, movie)
+
+	json.NewEncoder(w).Encode(movie)
+}
+
 //	@title			Movies CRUD API
 //	@description	This is a sample server for a movie store.
 //	@version		1.0.0
@@ -111,6 +135,7 @@ func main() {
 	api.HandleFunc("/movies", getMovies).Methods(http.MethodGet)
 	api.HandleFunc("/movie/{id}", deleteMovie).Methods(http.MethodDelete)
 	api.HandleFunc("/movie/{id}", getMovie).Methods(http.MethodGet)
+	api.HandleFunc("/movie", createMovie).Methods(http.MethodPost)
 
 	fmt.Printf("Starting server at port 8000\n")
 	log.Fatal(http.ListenAndServe(":8000", r))
