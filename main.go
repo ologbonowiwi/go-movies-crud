@@ -92,11 +92,9 @@ func getMovie(w http.ResponseWriter, r *http.Request) {
 func decodeMovie(w http.ResponseWriter, r *http.Request) (Movie, error) {
 	var movie Movie
 
-	if err := json.NewDecoder(r.Body).Decode(&movie); err != nil {
-		return Movie{}, err
-	}
+	err := json.NewDecoder(r.Body).Decode(&movie)
 
-	return movie, nil
+	return movie, err
 }
 
 // @Summary Create a new movie
